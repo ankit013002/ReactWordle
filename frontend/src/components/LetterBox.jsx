@@ -31,8 +31,9 @@ const LetterBox = ({
 
   const keyDown = (e) => {
     if (e.nativeEvent.key === "Backspace") {
-      setLetterInput("");
-      if (index.column > 0 || index.row > 0) {
+      if (letterInput) {
+        setLetterInput("");
+      } else if (index.column > 0 || index.row > 0) {
         shiftIndex(-1);
       }
     } else if ((e.nativeEvent.key == "Enter") & allowSubmit) {
