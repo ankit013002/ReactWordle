@@ -11,13 +11,19 @@ const LetterBox = ({
   setSeeResult,
   shiftToNewRow,
   seeResult,
+  numberCorrect,
   setNumberCorrect,
   pressedLetter,
+  endGame,
+  win,
 }) => {
   const [backgroundColor, setBackgroundColor] = useState("white");
   const [fontColor, setFontColor] = useState("gray");
   const [letterInput, setLetterInput] = useState("");
   const letterBox = useRef();
+
+  const isFocused =
+    focusIndex.row === index.row && focusIndex.column === index.column;
 
   useEffect(() => {
     if ((index.column == focusIndex.column) & (index.row == focusIndex.row)) {
@@ -32,6 +38,12 @@ const LetterBox = ({
       }
     }
   }, [focusIndex, pressedLetter]);
+
+  useEffect(() => {
+    if (win) {
+      letterBox.current.readOnly = true;
+    }
+  }, [win]);
 
   const updateLetterBox = (text) => {
     const char = text.slice(0, 1);
@@ -56,18 +68,26 @@ const LetterBox = ({
       if (letterInput === letter) {
         setBackgroundColor("#6ba968");
         setNumberCorrect((prevNumberCorrect) => {
+          if (
+            index.column === word.length - 1 &&
+            prevNumberCorrect != word.length - 1
+          ) {
+            shiftToNewRow();
+          } else if (prevNumberCorrect == word.length - 1) {
+            console.log("here");
+            endGame();
+          }
+          console.log(prevNumberCorrect);
           return prevNumberCorrect + 1;
         });
       } else if (word.indexOf(letterInput) != -1) {
         setBackgroundColor("#c8b45d");
+        index.column === word.length - 1 && shiftToNewRow();
       } else {
         setBackgroundColor("#787c81");
+        index.column === word.length - 1 && shiftToNewRow();
       }
       setFontColor("white");
-
-      if (index.column === word.length - 1) {
-        shiftToNewRow(); // After last box of the row is colored
-      }
 
       setSeeResult(false);
     }
@@ -81,8 +101,13 @@ const LetterBox = ({
       }}
     >
       <input
+        onBlur={() => {
+          if (isFocused) {
+            setTimeout(() => letterBox.current.focus(), 0);
+          }
+        }}
         style={{ color: `${fontColor}` }}
-        onKeyDown={(e) => keyDown(e.nativeEvent.key)}
+        onKeyDown={(e) => !win && keyDown(e.nativeEvent.key)}
         value={letterInput}
         onChange={(e) => updateLetterBox(e.target.value.toUpperCase())}
         ref={letterBox}

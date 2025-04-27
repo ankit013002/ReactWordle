@@ -12,6 +12,7 @@ const WordleGrid = ({ pressedLetter, word }) => {
   const [canEnter, setCanEnter] = useState(false);
   const [seeResult, setSeeResult] = useState(false);
   const [numberCorrect, setNumberCorrect] = useState(0);
+  const [win, setWin] = useState(false);
 
   useEffect(() => {
     setcolumns(word.length);
@@ -31,12 +32,15 @@ const WordleGrid = ({ pressedLetter, word }) => {
   };
 
   const shiftIndexRow = () => {
-    if (numberCorrect != word.length - 1) {
-      setFocusIndex((prevFocusIndex) => {
-        return { column: 0, row: prevFocusIndex.row + 1 };
-      });
-      setNumberCorrect(0);
-    }
+    setFocusIndex((prevFocusIndex) => {
+      return { column: 0, row: prevFocusIndex.row + 1 };
+    });
+    setNumberCorrect(0);
+  };
+
+  const endGame = () => {
+    console.log("WIN");
+    setWin(true);
   };
 
   return (
@@ -81,8 +85,11 @@ const WordleGrid = ({ pressedLetter, word }) => {
                     setSeeResult={setSeeResult}
                     shiftToNewRow={shiftIndexRow}
                     seeResult={seeResult}
+                    numberCorrect={numberCorrect}
                     setNumberCorrect={setNumberCorrect}
                     pressedLetter={pressedLetter}
+                    endGame={endGame}
+                    win={win}
                   />
                 </div>
               );
