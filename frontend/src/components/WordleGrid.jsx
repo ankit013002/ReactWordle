@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./WordleGrid.css";
 import LetterBox from "./LetterBox";
 
-const WordleGrid = ({ word }) => {
+const WordleGrid = ({ pressedLetter, word }) => {
   const [columns, setcolumns] = useState(0);
   const [chars, setChars] = useState([]);
   const [focusIndex, setFocusIndex] = useState({
@@ -33,7 +33,6 @@ const WordleGrid = ({ word }) => {
   const shiftIndexRow = () => {
     if (numberCorrect != word.length - 1) {
       setFocusIndex((prevFocusIndex) => {
-        console.log(prevFocusIndex);
         return { column: 0, row: prevFocusIndex.row + 1 };
       });
       setNumberCorrect(0);
@@ -83,6 +82,7 @@ const WordleGrid = ({ word }) => {
                     shiftToNewRow={shiftIndexRow}
                     seeResult={seeResult}
                     setNumberCorrect={setNumberCorrect}
+                    pressedLetter={pressedLetter}
                   />
                 </div>
               );

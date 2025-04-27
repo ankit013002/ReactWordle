@@ -5,35 +5,36 @@ import KeyboardKey from "./KeyboardKey";
 import { FaBackspace } from "react-icons/fa";
 import { IoMdReturnRight } from "react-icons/io";
 
-const Keyboard = () => {
+const Keyboard = ({ letterPressed }) => {
   const [firstRow, setFirstRow] = useState([
-    { label: "Q" },
-    { label: "W" },
-    { label: "E" },
-    { label: "R" },
-    { label: "T" },
-    { label: "Y" },
-    { label: "U" },
-    { label: "I" },
-    { label: "O" },
-    { label: "P" },
+    { value: "Q", display: "Q", type: "letter" },
+    { value: "W", display: "W", type: "letter" },
+    { value: "E", display: "E", type: "letter" },
+    { value: "R", display: "R", type: "letter" },
+    { value: "T", display: "T", type: "letter" },
+    { value: "Y", display: "Y", type: "letter" },
+    { value: "U", display: "U", type: "letter" },
+    { value: "I", display: "I", type: "letter" },
+    { value: "O", display: "O", type: "letter" },
+    { value: "P", display: "P", type: "letter" },
   ]);
 
   const [secondRow, setSecondRow] = useState([
-    { label: "A" },
-    { label: "S" },
-    { label: "D" },
-    { label: "F" },
-    { label: "G" },
-    { label: "H" },
-    { label: "J" },
-    { label: "K" },
-    { label: "L" },
+    { value: "A", display: "A", type: "letter" },
+    { value: "S", display: "S", type: "letter" },
+    { value: "D", display: "D", type: "letter" },
+    { value: "F", display: "F", type: "letter" },
+    { value: "G", display: "G", type: "letter" },
+    { value: "H", display: "H", type: "letter" },
+    { value: "J", display: "J", type: "letter" },
+    { value: "K", display: "K", type: "letter" },
+    { value: "L", display: "L", type: "letter" },
   ]);
 
   const [thirdRow, setThirdRow] = useState([
     {
-      label: (
+      value: "ENTER",
+      display: (
         <div
           style={{
             display: "flex",
@@ -54,16 +55,26 @@ const Keyboard = () => {
           <IoMdReturnRight style={{ width: "2em" }} />
         </div>
       ),
+      type: "enter",
     },
-    { label: "Z" },
-    { label: "X" },
-    { label: "C" },
-    { label: "V" },
-    { label: "B" },
-    { label: "N" },
-    { label: "M" },
-    { label: <FaBackspace style={{ width: "2em" }} /> },
+    { value: "Z", display: "Z", type: "letter" },
+    { value: "X", display: "X", type: "letter" },
+    { value: "C", display: "C", type: "letter" },
+    { value: "V", display: "V", type: "letter" },
+    { value: "B", display: "B", type: "letter" },
+    { value: "N", display: "N", type: "letter" },
+    { value: "M", display: "M", type: "letter" },
+    {
+      value: "BACKSPACE",
+      display: <FaBackspace style={{ width: "2em" }} />,
+      type: "backspace",
+    },
   ]);
+
+  const handlePressedKey = (key) => {
+    letterPressed(key);
+    setTimeout(() => letterPressed(""), 0);
+  };
 
   return (
     <div className="keyboard-container">
@@ -76,7 +87,11 @@ const Keyboard = () => {
         }}
       >
         {firstRow.map((letter, index) => (
-          <KeyboardKey key={index} letter={letter} />
+          <KeyboardKey
+            pressed={(key) => handlePressedKey(key)}
+            key={index}
+            letter={letter}
+          />
         ))}
       </div>
       <div
@@ -88,7 +103,11 @@ const Keyboard = () => {
         }}
       >
         {secondRow.map((letter, index) => (
-          <KeyboardKey key={index} letter={letter} />
+          <KeyboardKey
+            pressed={(key) => handlePressedKey(key)}
+            key={index}
+            letter={letter}
+          />
         ))}
       </div>
       <div
@@ -100,7 +119,11 @@ const Keyboard = () => {
         }}
       >
         {thirdRow.map((letter, index) => (
-          <KeyboardKey key={index} letter={letter} />
+          <KeyboardKey
+            pressed={(key) => handlePressedKey(key)}
+            key={index}
+            letter={letter}
+          />
         ))}
       </div>
     </div>

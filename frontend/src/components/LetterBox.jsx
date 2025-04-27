@@ -12,6 +12,7 @@ const LetterBox = ({
   shiftToNewRow,
   seeResult,
   setNumberCorrect,
+  pressedLetter,
 }) => {
   const [backgroundColor, setBackgroundColor] = useState("white");
   const [fontColor, setFontColor] = useState("gray");
@@ -19,24 +20,33 @@ const LetterBox = ({
   const letterBox = useRef();
 
   useEffect(() => {
-    if ((index.column == focusIndex.column) & (index.row == focusIndex.row))
+    if ((index.column == focusIndex.column) & (index.row == focusIndex.row)) {
       letterBox.current.focus();
-  }, [focusIndex]);
 
-  const updateLetterBox = (e) => {
-    const char = e.target.value.slice(0, 1);
+      if (pressedLetter) {
+        if (pressedLetter.length == 1) {
+          updateLetterBox(pressedLetter);
+        } else {
+          keyDown(pressedLetter);
+        }
+      }
+    }
+  }, [focusIndex, pressedLetter]);
+
+  const updateLetterBox = (text) => {
+    const char = text.slice(0, 1);
     setLetterInput(char);
     if (char) shiftIndex(1);
   };
 
-  const keyDown = (e) => {
-    if (e.nativeEvent.key === "Backspace") {
+  const keyDown = (key) => {
+    if (key.toLowerCase() === "backspace") {
       if (letterInput) {
         setLetterInput("");
       } else if (index.column > 0 || index.row > 0) {
         shiftIndex(-1);
       }
-    } else if ((e.nativeEvent.key == "Enter") & allowSubmit) {
+    } else if ((key.toLowerCase() == "enter") & allowSubmit) {
       setSeeResult(true);
     }
   };
@@ -72,9 +82,9 @@ const LetterBox = ({
     >
       <input
         style={{ color: `${fontColor}` }}
-        onKeyDown={(e) => keyDown(e)}
+        onKeyDown={(e) => keyDown(e.nativeEvent.key)}
         value={letterInput}
-        onChange={(e) => updateLetterBox(e)}
+        onChange={(e) => updateLetterBox(e.target.value.toUpperCase())}
         ref={letterBox}
         className="letterbox-input"
       />

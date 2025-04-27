@@ -5,7 +5,8 @@ import Keyboard from "../components/Keyboard";
 import Header from "../components/Header";
 
 const Mainpage = () => {
-  const [word, setWord] = useState("apple");
+  const [word, setWord] = useState("APPLE");
+  const [pressedLetter, setPressedLetter] = useState("");
 
   return (
     <div className="mainpage-container">
@@ -13,10 +14,14 @@ const Mainpage = () => {
         <Header />
       </div>
       <div className="mainpage-wordle-grid-container">
-        <WordleGrid word={word} />
+        <WordleGrid pressedLetter={pressedLetter} word={word} />
       </div>
       <div className="mainpage-keyboard-container">
-        <Keyboard />
+        <Keyboard
+          letterPressed={(letter) => {
+            setPressedLetter(letter);
+          }}
+        />
       </div>
     </div>
   );
