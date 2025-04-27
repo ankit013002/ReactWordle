@@ -1,0 +1,13 @@
+.key-container{
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: #999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.key-container:hover {
+    border: 1px solid black;
+    background-color: #777;
+}

@@ -1,0 +1,8 @@
+.keyboard-container{
+    display: grid;
+    padding: 1em;
+    grid-template-rows: repeat(3, auto);
+    gap: 0.5em;
+    width: auto;
+    align-items: center;
+}

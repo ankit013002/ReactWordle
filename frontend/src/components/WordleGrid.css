@@ -1,0 +1,6 @@
+.wordle-grid-container{
+    display: grid;
+    justify-content: space-around;
+    background-color: #ff0000;
+    width: 90%;
+}
