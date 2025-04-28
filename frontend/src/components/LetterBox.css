@@ -3,7 +3,7 @@
 }
 
 .letterbox-input {
-    font-size: 10vw;
+    font-size: clamp(3em, 5em, 10vw);
     border: none;
     outline: none;
     text-align: center;

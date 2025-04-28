@@ -1,5 +1,6 @@
 .vscode
 
+# Frontend
 node_modules/
 
 dist/
@@ -31,3 +32,19 @@ coverage/
 
 *.swp
 *.lock
+
+# Backend
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+*.egg
+pip-log.txt
+pip-delete-this-directory.txt

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./WordleGrid.css";
 import LetterBox from "./LetterBox";
 
-const WordleGrid = ({ pressedLetter, word }) => {
+const WordleGrid = ({ pressedLetter, word, victory, setVictory }) => {
   const [columns, setcolumns] = useState(0);
   const [chars, setChars] = useState([]);
   const [focusIndex, setFocusIndex] = useState({
@@ -14,7 +14,30 @@ const WordleGrid = ({ pressedLetter, word }) => {
   const [numberCorrect, setNumberCorrect] = useState(0);
   const [win, setWin] = useState(false);
 
+  const handleResultReport = (columnIndex, result) => {
+    if (result === "correct") {
+      setNumberCorrect((prev) => {
+        const updated = prev + 1;
+        console.log("updated: " + updated);
+        console.log("length: " + word.length);
+        if (updated == word.length - 1) {
+          setVictory(() => {
+            console.log("here");
+            return true;
+          });
+        }
+        return updated;
+      });
+    }
+
+    if (columnIndex === word.length - 1) {
+      setSeeResult(false);
+      shiftIndexRow();
+    }
+  };
+
   useEffect(() => {
+    console.log(word);
     setcolumns(word.length);
     setChars(word.split(""));
   }, []);
@@ -39,7 +62,6 @@ const WordleGrid = ({ pressedLetter, word }) => {
   };
 
   const endGame = () => {
-    console.log("WIN");
     setWin(true);
   };
 
@@ -85,11 +107,11 @@ const WordleGrid = ({ pressedLetter, word }) => {
                     setSeeResult={setSeeResult}
                     shiftToNewRow={shiftIndexRow}
                     seeResult={seeResult}
-                    numberCorrect={numberCorrect}
-                    setNumberCorrect={setNumberCorrect}
                     pressedLetter={pressedLetter}
                     endGame={endGame}
                     win={win}
+                    reportResult={handleResultReport}
+                    victory={victory}
                   />
                 </div>
               );

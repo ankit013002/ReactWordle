@@ -11,11 +11,11 @@ const LetterBox = ({
   setSeeResult,
   shiftToNewRow,
   seeResult,
-  numberCorrect,
-  setNumberCorrect,
   pressedLetter,
   endGame,
   win,
+  reportResult,
+  victory,
 }) => {
   const [backgroundColor, setBackgroundColor] = useState("white");
   const [fontColor, setFontColor] = useState("gray");
@@ -64,32 +64,21 @@ const LetterBox = ({
   };
 
   useEffect(() => {
-    if (focusIndex.row == index.row && seeResult == true) {
+    if (focusIndex.row === index.row && seeResult) {
+      let result = "incorrect";
       if (letterInput === letter) {
+        result = "correct";
         setBackgroundColor("#6ba968");
-        setNumberCorrect((prevNumberCorrect) => {
-          if (
-            index.column === word.length - 1 &&
-            prevNumberCorrect != word.length - 1
-          ) {
-            shiftToNewRow();
-          } else if (prevNumberCorrect == word.length - 1) {
-            console.log("here");
-            endGame();
-          }
-          console.log(prevNumberCorrect);
-          return prevNumberCorrect + 1;
-        });
-      } else if (word.indexOf(letterInput) != -1) {
+      } else if (word.includes(letterInput)) {
+        result = "misplaced";
         setBackgroundColor("#c8b45d");
-        index.column === word.length - 1 && shiftToNewRow();
       } else {
         setBackgroundColor("#787c81");
-        index.column === word.length - 1 && shiftToNewRow();
       }
+
       setFontColor("white");
 
-      setSeeResult(false);
+      reportResult(index.column, result);
     }
   }, [seeResult]);
 
@@ -101,13 +90,14 @@ const LetterBox = ({
       }}
     >
       <input
+        readOnly={victory}
         onBlur={() => {
           if (isFocused) {
             setTimeout(() => letterBox.current.focus(), 0);
           }
         }}
         style={{ color: `${fontColor}` }}
-        onKeyDown={(e) => !win && keyDown(e.nativeEvent.key)}
+        onKeyDown={(e) => !victory && keyDown(e.nativeEvent.key)}
         value={letterInput}
         onChange={(e) => updateLetterBox(e.target.value.toUpperCase())}
         ref={letterBox}
